@@ -14,7 +14,7 @@ func WriteAscii(content, fileName string) error {
 		return err
 	}
 
-	err = os.WriteFile(fileName, []byte(content), 0o644)
+	err := os.WriteFile(fileName, []byte(content), 0o644)
 	if err != nil {
 		return fmt.Errorf("error while creating a file: %v", err)
 	}
