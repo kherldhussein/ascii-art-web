@@ -1,82 +1,39 @@
-# ASCII Art Output
+# ASCII Art Web
 
-This project involves creating a Go program that generates ASCII art based on a given string and banner style, and writes the result into a file when output flag is specified.Additionally, it runs with a single [STRING] argument.
+This project involves creating a Go program that generates ASCII art based on a given string and banner style, using a web interface and displays the results on the same interface.
 
 ## Features
 
 - Converts strings into ASCII art
 - Supports numbers, letters, spaces, special characters, and newline characters ('\n')
 - Utilizes specific graphical templates for ASCII representation
-- Writes the ascii art into a file if output flag is specified
+- A running a server and a web GUI (graphical user interface)
 
 ## Installation
 
 1. Clone the repository:
 
     ```bash
-    git clone https://learn.zone01kisumu.ke/git/doonyango/ascii-art-output.git
+    git clone https://learn.zone01kisumu.ke/git/khahussein/ascii-art-web.git
     ```
 
 2. Navigate to the project directory:
 
     ```bash
-    cd ascii-art-output/
+    cd ascii-art-web/
     ```
 
 
 ## Usage
 
-To generate ASCII art for a string or write the ascii art into a file, run the following command:
+Run the server to start the [localhost](http://localhost:8080), then use the web browser to interact with the system.
 
 ```bash
-go run . "string"
+go run .
 ```
 
-Example:
-
-```bash
-go run . "Hello\n" | cat -e
-```
-
-Output:
-
-```ruby
- _    _          _   _          $
-| |  | |        | | | |         $
-| |__| |   ___  | | | |   ___   $
-|  __  |  / _ \ | | | |  / _ \  $
-| |  | | |  __/ | | | | | (_) | $
-|_|  |_|  \___| |_| |_|  \___/  $
-                                $
-                                $
-$                                                  
-```
-```
-go run . --output=<fileName.txt> something standard
-```
-Output
-
-cat -e fileName.txt
-```
-                                  _     _       _                  
-                                 | |   | |     (_)                 
- ___    ___    _ __ ___     ___  | |_  | |__    _   _ __     __ _  
-/ __|  / _ \  | '_ ` _ \   / _ \ | __| |  _ \  | | | '_ \   / _` | 
-\__ \ | (_) | | | | | | | |  __/ \ |_  | | | | | | | | | | | (_| | 
-|___/  \___/  |_| |_| |_|  \___|  \__| |_| |_| |_| |_| |_|  \__, | 
-                                                             __/ | 
-                                                            |___/  
-```
-
-### Testing
-```
-cd tests/
-```
-```
-go test -v
-```
-
-
+<!-- Example: -->
+<!-- TODO: Add screenshot of our web interface here to show example of the UI -->
 
 ## File Formats
 
@@ -98,4 +55,4 @@ This project was build and maintained by:
 
  * [Doreen Onyango](https://github.com/Doreen-Onyango)
  * [Kherld Hussein](https://github.com/kherldhussein)
- * [Stephen Omotto](https://github.com/somotto)
+ * [Tomlee Abila](https://github.com/Tomlee-abila)
