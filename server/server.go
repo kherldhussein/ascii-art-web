@@ -39,7 +39,7 @@ func AsciiServer(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, fmt.Sprintf("ParseForm() %v", err), http.StatusBadRequest)
 	}
 
-	fmt.Fprintf(w, "POST request successful\n")
+	// fmt.Fprintf(w, "POST request successful\n")
 	input := r.FormValue("Input")
 	banner := r.FormValue("Banner")
 
