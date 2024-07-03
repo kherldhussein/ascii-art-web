@@ -2,15 +2,17 @@ package webAscii
 
 import (
 	"fmt"
+	"net/http"
 	"strings"
 )
 
-func printWord(word string, asciiArtGrid [][]string) string {
+func printWord(w http.ResponseWriter, word string, asciiArtGrid [][]string) string {
 	result := ""
 	for i := 1; i <= 8; i++ {
 		for _, char := range word {
 			index := int(char - 32)
 			if index < 0 || index >= len(asciiArtGrid) {
+				http.Error(w, "non-printable ascii character", http.StatusMethodNotAllowed)
 				return ""
 			} else {
 				result += asciiArtGrid[index][i]
@@ -21,7 +23,7 @@ func printWord(word string, asciiArtGrid [][]string) string {
 	return result
 }
 
-func PrintArt(str string, asciiArtGrid [][]string) string {
+func PrintArt(w http.ResponseWriter, str string, asciiArtGrid [][]string) string {
 	result := ""
 	switch str {
 	case "":
@@ -29,7 +31,8 @@ func PrintArt(str string, asciiArtGrid [][]string) string {
 	case "\\n":
 		fmt.Println()
 	case "\\r", "\\f", "\\v", "\\t", "\\b", "\\a":
-		return "f)"
+		http.Error(w, "Unsupported escape sequence", http.StatusMethodNotAllowed)
+		return ""
 	default:
 		s := strings.ReplaceAll(str, "\\n", "\n")
 		s = strings.ReplaceAll(s, "\\r", "\r")
@@ -48,7 +51,7 @@ func PrintArt(str string, asciiArtGrid [][]string) string {
 					continue
 				}
 			} else {
-				return printWord(word, asciiArtGrid)
+				return printWord(w, word, asciiArtGrid)
 			}
 		}
 	}
