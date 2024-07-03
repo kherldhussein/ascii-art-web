@@ -5,29 +5,31 @@ import (
 	"strings"
 )
 
-func printWord(word string, asciiArtGrid [][]string) error {
+func printWord(word string, asciiArtGrid [][]string) string {
+	result := ""
 	for i := 1; i <= 8; i++ {
 		for _, char := range word {
 			index := int(char - 32)
 			if index < 0 || index >= len(asciiArtGrid) {
-				return fmt.Errorf("unknown character: %q", char)
+				return ""
 			} else {
-				fmt.Print(asciiArtGrid[index][i])
+				result += asciiArtGrid[index][i]
 			}
 		}
-		fmt.Println()
+		result += "\n"
 	}
-	return nil
+	return result
 }
 
-func PrintArt(str string, asciiArtGrid [][]string) error {
+func PrintArt(str string, asciiArtGrid [][]string) string {
+	result := ""
 	switch str {
 	case "":
 		fmt.Print()
 	case "\\n":
 		fmt.Println()
 	case "\\r", "\\f", "\\v", "\\t", "\\b", "\\a":
-		return fmt.Errorf("error: unsupported escape sequence '%s'", str)
+		return "f)"
 	default:
 		s := strings.ReplaceAll(str, "\\n", "\n")
 		s = strings.ReplaceAll(s, "\\r", "\r")
@@ -42,16 +44,13 @@ func PrintArt(str string, asciiArtGrid [][]string) error {
 			if word == "" {
 				num++
 				if num < len(words) {
-					fmt.Println()
+					result += "\n"
 					continue
 				}
 			} else {
-				err := printWord(word, asciiArtGrid)
-				if err != nil {
-					return err
-				}
+				return printWord(word, asciiArtGrid)
 			}
 		}
 	}
-	return nil
+	return result
 }
