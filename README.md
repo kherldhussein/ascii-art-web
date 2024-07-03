@@ -35,6 +35,13 @@ go run .
 <!-- Example: -->
 <!-- TODO: Add screenshot of our web interface here to show example of the UI -->
 
+## Test
+start the server with the above usage command and run the below command to test server functionality
+
+```bash
+curl -X POST -d "Input=Hello World" -d "Banner=standard" http://localhost:8080/ascii
+```
+
 ## File Formats
 
 - `standard.txt`: Standard ASCII character set
