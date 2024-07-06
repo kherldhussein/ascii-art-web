@@ -63,6 +63,10 @@ If you have suggestions for improvements, bug fixes, or new features, feel free 
 
 This project was build and maintained by:
 
- * [Doreen Onyango](https://github.com/Doreen-Onyango)
- * [Khalid Hussein](https://github.com/kherldhussein)
- * [Tomlee Abila](https://github.com/Tomlee-abila)
+ * [Doreen Onyango][doonyango]
+ * [Khalid Hussein][khahussein]
+ * [Tomlee Abila][tabila]
+
+[khahussein]: https://github.com/kherldhussein
+[doonyango]: https://github.com/Doreen-Onyango
+[tabila]: https://github.com/Tomlee-abila
