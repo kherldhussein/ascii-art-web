@@ -54,7 +54,7 @@ Below is the function that handles requests and responses. This extract specific
 
 ```go
 func AsciiServer(w http.ResponseWriter, r *http.Request) {
-    {...}
+    // ...
 	all := []string{"standard", "thinkertoy", "shadow"}
 
 	if banner == "all" {
@@ -68,7 +68,7 @@ func AsciiServer(w http.ResponseWriter, r *http.Request) {
 		str += writeAscii(w, banner, text)
 	}
 
-    {...}
+    // ...
     fmt.Fprint(w, str)
 ```    
 
