@@ -8,9 +8,9 @@ import (
 )
 
 var files = map[string]bool{
-	"assets/shadow.txt":     true,
-	"assets/standard.txt":   true,
-	"assets/thinkertoy.txt": true,
+	"public/shadow.txt":     true,
+	"public/standard.txt":   true,
+	"public/thinkertoy.txt": true,
 }
 
 func ValidateFileName(file string) bool {

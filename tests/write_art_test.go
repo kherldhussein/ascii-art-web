@@ -8,7 +8,7 @@ import (
 )
 
 func TestWriteArt(t *testing.T) {
-	asciiArtGrid, err := in.ReadAscii("assets/standard.txt")
+	asciiArtGrid, err := in.ReadAscii("public/standard.txt")
 	if err != nil {
 		t.Errorf("Error Reading: %v", err)
 		return
