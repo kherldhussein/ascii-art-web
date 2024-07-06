@@ -1,6 +1,7 @@
 package webAscii
 
 import (
+	"net/http"
 	"strings"
 )
 
@@ -16,7 +17,7 @@ func printWord(word string, asciiArtGrid [][]string) string {
 	return result
 }
 
-func PrintArt(str string, asciiArtGrid [][]string) string {
+func PrintArt(w http.ResponseWriter, str string, asciiArtGrid [][]string) string {
 	result := ""
 	switch str {
 	case "":
@@ -30,7 +31,8 @@ func PrintArt(str string, asciiArtGrid [][]string) string {
 		for _, word := range words {
 			for _, ch := range word {
 				if ch < ' ' || ch > '~' {
-					return string(ch) + " is non-printable ascii character"
+					http.Error(w, string(ch)+" is non-printable ascii character", http.StatusBadRequest)
+					return ""
 				}
 			}
 			if word == "" {
