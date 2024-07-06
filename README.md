@@ -35,7 +35,7 @@ go run .
 
 ## Example
 Type something in the text area provided and should display some output
-![Hello!](assets/shot.png)
+![Hello!](public/img.png)
 <!-- Screenshot of our web interface: shows example of the UI -->
 
 ## Test
