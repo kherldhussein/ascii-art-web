@@ -27,23 +27,50 @@ This program is written purely in [Go](https://go.dev) language for the backend,
 
 ## Usage
 
-Run the below command to start the server: [localhost](http://localhost:8080), then use the web browser to interact with the system.
+Run the below command to start the server, then use the web browser to interact with the system [localhost](http://localhost:8080)
 
 ```bash
 go run .
 ```
 
 ## Example
+
 Type something in the text area provided and should display some output
+
 ![Hello!](public/img.png)
 <!-- Screenshot of our web interface: shows example of the UI -->
 
 ## Test
-start the server with the above usage command and run the below command to test server functionality
+
+start the server with the above usage command and run the below command to test the program's functionality
 
 ```bash
-curl -X POST -d "Input=Hello World&Banner=standard" http://localhost:8080/ascii-art
+curl -X POST -d "Text=Hello World&Banner=standard" http://localhost:8080/ascii-art
 ```
+
+## Implementation
+
+Below is the function that handles requests and responses. This extract specifically displays the data based on the banner file selected and if the 'all' button is selected it displays data based on all the banner files.
+
+```go
+func AsciiServer(w http.ResponseWriter, r *http.Request) {
+    {...}
+	all := []string{"standard", "thinkertoy", "shadow"}
+
+	if banner == "all" {
+		for i, bn := range all {
+			if i != 0 {
+				str += "\n"
+			}
+			str += writeAscii(w, bn, text)
+		}
+	} else {
+		str += writeAscii(w, banner, text)
+	}
+
+    {...}
+    fmt.Fprint(w, str)
+```    
 
 ## File Formats
 
