@@ -217,11 +217,11 @@
         document.getElementById('asciiForm').addEventListener('submit', function (event) {
             event.preventDefault();
 
-            const input = document.querySelector('#asciiForm textarea[name="Input"]').value;
+            const text = document.querySelector('#asciiForm textarea[name="Input"]').value;
             const banner = document.querySelector('#asciiForm input[name="Banner"]:checked').value;
 
             const formData = new URLSearchParams();
-            formData.append('Input', input);
+            formData.append('Text', text);
             formData.append('Banner', banner);
 
             fetch('/ascii-art', {
