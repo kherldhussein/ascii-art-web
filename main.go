@@ -8,7 +8,7 @@ import (
 )
 
 func main() {
-	fileserver := http.FileServer(http.Dir("./static"))
+	fileserver := http.FileServer(http.Dir("./templates"))
 	http.Handle("/", fileserver)
 	http.HandleFunc("/ascii-art", server.AsciiServer)
 
