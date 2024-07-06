@@ -25,7 +25,7 @@ func AsciiServer(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, fmt.Sprintf("ParseForm() %v", err), http.StatusBadRequest)
 	}
 
-	input := r.FormValue("Input")
+	text := r.FormValue("Text")
 	banner := r.FormValue("Banner")
 
 	str := ""
@@ -37,17 +37,17 @@ func AsciiServer(w http.ResponseWriter, r *http.Request) {
 			if i != 0 {
 				str += "\n"
 			}
-			str += writeAscii(w, bn, input)
+			str += writeAscii(w, bn, text)
 		}
 	} else {
-		str += writeAscii(w, banner, input)
+		str += writeAscii(w, banner, text)
 	}
 
 	w.Header().Set("Content-Type", "text/plain")
 	fmt.Fprint(w, str)
 }
 
-func writeAscii(w http.ResponseWriter, banner, input string) string {
+func writeAscii(w http.ResponseWriter, banner, text string) string {
 	filename, ok := banners[banner]
 	if !ok {
 		http.Error(w, "Not Found", http.StatusNotFound)
@@ -56,16 +56,16 @@ func writeAscii(w http.ResponseWriter, banner, input string) string {
 
 	err := check.ValidateFileChecksum(filename)
 	if err != nil {
-		http.Error(w, fmt.Sprintf("Error downloading or validating file: %v", err), http.StatusInternalServerError)
+		http.Error(w, fmt.Sprintf("Error downloading or validating file: %v", err), http.StatusNotFound)
 		return "Error generating ASCII art"
 	}
 
 	asciiArtGrid, err := output.ReadAscii(filename)
 	if err != nil {
-		http.Error(w, fmt.Sprintf("Error reading ASCII art: %v", err), http.StatusNoContent)
+		http.Error(w, fmt.Sprintf("Error reading ASCII art: %v", err), http.StatusInternalServerError)
 		return "Error generating ASCII art"
 	}
 
-	str := print.PrintArt(w, input, asciiArtGrid)
+	str := print.PrintArt(w, text, asciiArtGrid)
 	return str
 }
