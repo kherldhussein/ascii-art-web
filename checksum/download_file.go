@@ -10,11 +10,11 @@ import (
 func DownloadFile(file string) error {
 	url := ""
 	switch file {
-	case "standard.txt":
+	case "assets/standard.txt":
 		url = "https://github.com/kherldhussein/asciiart/raw/master/standard.txt"
-	case "shadow.txt":
+	case "assets/shadow.txt":
 		url = "https://github.com/kherldhussein/asciiart/raw/master/shadow.txt"
-	case "thinkertoy.txt":
+	case "assets/thinkertoy.txt":
 		url = "https://github.com/kherldhussein/asciiart/raw/master/thinkertoy.txt"
 	default:
 		return fmt.Errorf("unsupported file name: %s", file)
