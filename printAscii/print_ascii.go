@@ -3,6 +3,8 @@ package webAscii
 import (
 	"net/http"
 	"strings"
+
+	send "webAscii/utils"
 )
 
 func printWord(word string, asciiArtGrid [][]string) string {
@@ -22,7 +24,7 @@ func PrintArt(w http.ResponseWriter, str string, asciiArtGrid [][]string) string
 
 	switch str {
 	case "":
-		result.WriteString("")
+		send.SendError(w, "insufficient input", http.StatusBadRequest)
 	case "\\n":
 		result.WriteString("\n")
 	default:
@@ -31,7 +33,7 @@ func PrintArt(w http.ResponseWriter, str string, asciiArtGrid [][]string) string
 		for _, line := range lines {
 			for _, ch := range line {
 				if ch < ' ' || ch > '~' {
-					http.Error(w, string(ch)+" is a non-printable ASCII character", http.StatusBadRequest)
+					send.SendError(w, string(ch)+" is a non-printable ASCII character", http.StatusBadRequest)
 					return ""
 				}
 			}
