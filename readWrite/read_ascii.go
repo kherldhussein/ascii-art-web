@@ -3,6 +3,7 @@ package webAscii
 import (
 	"bufio"
 	"fmt"
+	"net/http"
 	"os"
 	"strings"
 )
@@ -18,7 +19,7 @@ func ValidateFileName(file string) bool {
 	return ok
 }
 
-func ReadAscii(filename string) ([][]string, error) {
+func ReadAscii(filename string, w http.ResponseWriter) ([][]string, error) {
 	if !ValidateFileName(filename) {
 		return nil, fmt.Errorf("unsupported file name: %s", filename)
 	}
@@ -29,6 +30,7 @@ func ReadAscii(filename string) ([][]string, error) {
 
 	file, err := os.Open(filename)
 	if err != nil {
+		http.Error(w, fmt.Sprintf("Error 404 Not Found: %v", err), http.StatusNotFound)
 		return nil, fmt.Errorf("error opening file: %w", err)
 	}
 

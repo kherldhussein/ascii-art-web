@@ -21,7 +21,7 @@ func PrintArt(w http.ResponseWriter, str string, asciiArtGrid [][]string) string
 	result := ""
 	switch str {
 	case "":
-		result += ""
+		http.Error(w, "400: Bad request", http.StatusBadRequest)
 	case "\\n":
 		result += "\n"
 	default:
