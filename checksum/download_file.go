@@ -7,22 +7,27 @@ import (
 	"os"
 )
 
+const (
+	StandardAsciiURL   = "https://github.com/kherldhussein/asciiart/raw/master/standard.txt"
+	ShadowAsciiURL     = "https://github.com/kherldhussein/asciiart/raw/master/shadow.txt"
+	ThinkertoyAsciiURL = "https://github.com/kherldhussein/asciiart/raw/master/thinkertoy.txt"
+)
+
+var fileURLs = map[string]string{
+	"public/standard.txt":   StandardAsciiURL,
+	"public/shadow.txt":     ShadowAsciiURL,
+	"public/thinkertoy.txt": ThinkertoyAsciiURL,
+}
+
 func DownloadFile(file string) error {
-	url := ""
-	switch file {
-	case "public/standard.txt":
-		url = "https://github.com/kherldhussein/asciiart/raw/master/standard.txt"
-	case "public/shadow.txt":
-		url = "https://github.com/kherldhussein/asciiart/raw/master/shadow.txt"
-	case "public/thinkertoy.txt":
-		url = "https://github.com/kherldhussein/asciiart/raw/master/thinkertoy.txt"
-	default:
+	url, ok := fileURLs[file]
+	if !ok {
 		return fmt.Errorf("unsupported file name: %s", file)
 	}
 
 	res, err := http.Get(url)
 	if err != nil {
-		return fmt.Errorf("failed to fetch URL: %w", err)
+		return fmt.Errorf("failed to fetch URL %s: %w", url, err)
 	}
 	defer res.Body.Close()
 
@@ -35,12 +40,11 @@ func DownloadFile(file string) error {
 		return fmt.Errorf("failed to read response body: %w", err)
 	}
 
-	// Write to file
 	err = os.WriteFile(file, body, 0o644)
 	if err != nil {
-		return fmt.Errorf("failed to write file: %w", err)
+		return fmt.Errorf("failed to write file %s: %w", file, err)
 	}
 
-	fmt.Println("Downloaded", file, "from", url)
+	fmt.Printf("Downloaded %s from %s\n", file, url)
 	return nil
 }
