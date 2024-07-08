@@ -27,7 +27,12 @@ func AsciiServer(w http.ResponseWriter, r *http.Request) {
 
 	text := r.FormValue("Text")
 	banner := r.FormValue("Banner")
-
+	for param := range r.Form {
+		if param != "Text" && param != "Banner" {
+			http.Error(w, "Error: 400, Bad request", http.StatusBadRequest)
+			break
+		}
+	}
 	str := ""
 
 	all := []string{"standard", "thinkertoy", "shadow"}
@@ -50,19 +55,19 @@ func AsciiServer(w http.ResponseWriter, r *http.Request) {
 func writeAscii(w http.ResponseWriter, banner, text string) string {
 	filename, ok := banners[banner]
 	if !ok {
-		http.Error(w, "Not Found", http.StatusNotFound)
+		http.Error(w, "Error 404: Not Found", http.StatusNotFound)
 		return "Invalid banner specified\n"
 	}
 
 	err := check.ValidateFileChecksum(filename)
 	if err != nil {
-		http.Error(w, fmt.Sprintf("Error downloading or validating file: %v", err), http.StatusNotFound)
+		http.Error(w, fmt.Sprintf("Error 404: Error downloading or validating file: %v", err), http.StatusNotFound)
 		return "Error generating ASCII art"
 	}
 
-	asciiArtGrid, err := output.ReadAscii(filename)
+	asciiArtGrid, err := output.ReadAscii(filename, w)
 	if err != nil {
-		http.Error(w, fmt.Sprintf("Error reading ASCII art: %v", err), http.StatusInternalServerError)
+		http.Error(w, fmt.Sprintf("Error 500: Internal Server Error: Error reading ASCII art:%v", err), http.StatusInternalServerError)
 		return "Error generating ASCII art"
 	}
 
