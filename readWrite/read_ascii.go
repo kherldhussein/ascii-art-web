@@ -6,6 +6,8 @@ import (
 	"net/http"
 	"os"
 	"strings"
+
+	send "webAscii/utils"
 )
 
 var files = map[string]bool{
@@ -30,7 +32,7 @@ func ReadAscii(filename string, w http.ResponseWriter) ([][]string, error) {
 
 	file, err := os.Open(filename)
 	if err != nil {
-		http.Error(w, fmt.Sprintf("Error 404 Not Found: %v", err), http.StatusNotFound)
+		send.SendError(w, fmt.Sprintf("Error 404 Not Found: %v", err), http.StatusNotFound)
 		return nil, fmt.Errorf("error opening file: %w", err)
 	}
 
