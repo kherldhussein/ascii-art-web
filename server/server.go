@@ -35,6 +35,11 @@ func AsciiServer(w http.ResponseWriter, r *http.Request) {
 			break
 		}
 	}
+
+	if banner == "" || text == "" {
+		send.SendError(w, "Error 400 Bad request: nothing is specified", http.StatusBadRequest)
+		return
+	}
 	str := ""
 
 	all := []string{"standard", "thinkertoy", "shadow"}
