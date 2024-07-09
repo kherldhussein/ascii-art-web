@@ -8,8 +8,7 @@ import (
 )
 
 func main() {
-	fileserver := http.FileServer(http.Dir("./templates"))
-	http.Handle("/", fileserver)
+	http.HandleFunc("/", server.Handl)
 	http.HandleFunc("/ascii-art", server.AsciiServer)
 
 	log.Println("Server listening on http://localhost:8080")
