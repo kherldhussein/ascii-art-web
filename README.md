@@ -47,6 +47,17 @@ start the server with the above usage command and run the below command to test 
 ```bash
 curl -X POST -d "Text=Hello World&Banner=standard" http://localhost:8080/ascii-art
 ```
+Expected Output:
+```
+ _    _          _   _                __          __                 _       _  
+| |  | |        | | | |               \ \        / /                | |     | | 
+| |__| |   ___  | | | |   ___          \ \  /\  / /    ___    _ __  | |   __| | 
+|  __  |  / _ \ | | | |  / _ \          \ \/  \/ /    / _ \  | '__| | |  / _` | 
+| |  | | |  __/ | | | | | (_) |          \  /\  /    | (_) | | |    | | | (_| | 
+|_|  |_|  \___| |_| |_|  \___/            \/  \/      \___/  |_|    |_|  \__,_| 
+                                                                                
+                        
+```
 
 ## Implementation
 

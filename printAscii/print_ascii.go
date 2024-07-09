@@ -3,48 +3,49 @@ package webAscii
 import (
 	"net/http"
 	"strings"
+
+	send "webAscii/utils"
 )
 
 func printWord(word string, asciiArtGrid [][]string) string {
-	result := ""
+	var result strings.Builder
 	for i := 1; i <= 8; i++ {
 		for _, char := range word {
 			index := int(char - 32)
-			result += asciiArtGrid[index][i]
+			result.WriteString(asciiArtGrid[index][i])
 		}
-		result += "\n"
+		result.WriteString("\n")
 	}
-	return result
+	return result.String()
 }
 
 func PrintArt(w http.ResponseWriter, str string, asciiArtGrid [][]string) string {
-	result := ""
+	var result strings.Builder
+
 	switch str {
 	case "":
-		result += ""
+		send.SendError(w, "insufficient input", http.StatusBadRequest)
 	case "\\n":
-		result += "\n"
+		result.WriteString("\n")
 	default:
-		s := strings.ReplaceAll(str, "\\n", "\n")
-		words := strings.Split(s, "\n")
+		lines := strings.Split(strings.ReplaceAll(str, "\\n", "\n"), "\n")
 		num := 0
-		for _, word := range words {
-			for _, ch := range word {
+		for _, line := range lines {
+			for _, ch := range line {
 				if ch < ' ' || ch > '~' {
-					http.Error(w, string(ch)+" is non-printable ascii character", http.StatusBadRequest)
+					send.SendError(w, string(ch)+" is a non-printable ASCII character", http.StatusBadRequest)
 					return ""
 				}
 			}
-			if word == "" {
+			if line == "" {
 				num++
-				if num < len(words) {
-					result += "\n"
-					continue
+				if num < len(lines) {
+					result.WriteString("\n")
 				}
 			} else {
-				result += printWord(word, asciiArtGrid)
+				result.WriteString(printWord(line, asciiArtGrid))
 			}
 		}
 	}
-	return result
+	return result.String()
 }
