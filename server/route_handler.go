@@ -1,8 +1,11 @@
 package webAscii
 
 import (
+	"fmt"
 	"html/template"
 	"net/http"
+
+	send "webAscii/utils"
 )
 
 func Handl(w http.ResponseWriter, r *http.Request) {
@@ -12,8 +15,11 @@ func Handl(w http.ResponseWriter, r *http.Request) {
 	}
 	tmpl, err := template.ParseFiles("./templates/index.html")
 	if err != nil {
-		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+		send.SendError(w, "Internal Server Error", http.StatusInternalServerError)
 		return
 	}
-	err = tmpl.Execute(w, nil)
+
+	if err = tmpl.Execute(w, nil); err != nil {
+		fmt.Printf("error %v", err)
+	}
 }
