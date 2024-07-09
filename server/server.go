@@ -61,8 +61,7 @@ func writeAscii(w http.ResponseWriter, banner, text string) string {
 		return ""
 	}
 
-	err := check.ValidateFileChecksum(filename)
-	if err != nil {
+	if err := check.ValidateFileChecksum(filename); err != nil {
 		send.SendError(w, fmt.Sprintf("Error 404: Error downloading or validating file: %v", err), http.StatusNotFound)
 		return ""
 	}
@@ -73,6 +72,5 @@ func writeAscii(w http.ResponseWriter, banner, text string) string {
 		return ""
 	}
 
-	str := print.PrintArt(w, text, asciiArtGrid)
-	return str
+	return print.PrintArt(w, text, asciiArtGrid)
 }
