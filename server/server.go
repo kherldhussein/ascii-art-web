@@ -35,6 +35,11 @@ func AsciiServer(w http.ResponseWriter, r *http.Request) {
 			break
 		}
 	}
+
+	if banner == "" || text == "" {
+		send.SendError(w, "Error 400 Bad request: nothing is specified", http.StatusBadRequest)
+		return
+	}
 	str := ""
 
 	all := []string{"standard", "thinkertoy", "shadow"}
@@ -61,8 +66,7 @@ func writeAscii(w http.ResponseWriter, banner, text string) string {
 		return ""
 	}
 
-	err := check.ValidateFileChecksum(filename)
-	if err != nil {
+	if err := check.ValidateFileChecksum(filename); err != nil {
 		send.SendError(w, fmt.Sprintf("Error 404: Error downloading or validating file: %v", err), http.StatusNotFound)
 		return ""
 	}
@@ -73,6 +77,5 @@ func writeAscii(w http.ResponseWriter, banner, text string) string {
 		return ""
 	}
 
-	str := print.PrintArt(w, text, asciiArtGrid)
-	return str
+	return print.PrintArt(w, text, asciiArtGrid)
 }

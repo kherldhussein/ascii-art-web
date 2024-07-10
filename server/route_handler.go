@@ -34,7 +34,7 @@ func Handl(w http.ResponseWriter, r *http.Request) {
 
 	tmpl, err := template.ParseFiles("./templates/404.html")
 	if err != nil {
-		send.SendError(w, "Internal Sasdfgdfgerver Error", http.StatusInternalServerError)
+		send.SendError(w, "Internal Server Error", http.StatusInternalServerError)
 		return
 	}
 
