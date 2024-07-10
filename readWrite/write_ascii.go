@@ -7,11 +7,9 @@ import (
 	"regexp"
 )
 
-var err = errors.New("usage: go run . --output=<fileName.txt> something standard")
-
 func WriteAscii(content, fileName string) error {
 	if !isValidFileName(fileName) {
-		return err
+		return errors.New("usage: go run . --output=<fileName.txt> something standard")
 	}
 
 	err := os.WriteFile(fileName, []byte(content), 0o644)
