@@ -42,7 +42,15 @@ Type something in the text area provided and should display some output
 
 ## Test
 
-start the server with the above usage command and run the below command to test the program's functionality
+To test the functions, you can go two ways;
+
+1. Navigate to the tests directory and paste the following command.
+
+```bash
+go test -v
+```
+
+2. Start the server with the above usage command and run the below command to test the program's functionality
 
 ```bash
 curl -X POST -d "Text=Hello World&Banner=standard" http://localhost:8080/ascii-art
