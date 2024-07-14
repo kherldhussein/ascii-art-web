@@ -31,7 +31,7 @@ func AsciiServer(w http.ResponseWriter, r *http.Request) {
 	banner := r.FormValue("Banner")
 	for param := range r.Form {
 		if param != "Text" && param != "Banner" {
-			send.SendError(w, "Error 404: Bad request", http.StatusBadRequest)
+			send.SendError(w, "Error 400: Bad request", http.StatusBadRequest)
 			break
 		}
 	}
