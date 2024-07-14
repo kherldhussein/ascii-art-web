@@ -15,7 +15,7 @@ func Handl(w http.ResponseWriter, r *http.Request) {
 	}
 	tmpl, err := template.ParseFiles("./templates/index.html")
 	if err != nil {
-		send.SendError(w, "Internal Server Error", http.StatusInternalServerError)
+		send.SendError(w, "Error 404: PAGE NOT FOUND", http.StatusNotFound)
 		return
 	}
 
