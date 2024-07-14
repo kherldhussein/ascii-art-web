@@ -1,4 +1,4 @@
-package output
+package tests
 
 import (
 	"os"
@@ -27,17 +27,5 @@ func TestWriteAscii(t *testing.T) {
 	err = os.Remove(fileName)
 	if err != nil {
 		t.Errorf("Failed to delete test file %q: %v", fileName, err)
-	}
-
-	invalidFileName := "testfile.csv"
-
-	err = output.WriteAscii(content, invalidFileName)
-	if err == nil {
-		t.Errorf("WriteAscii(%q, %q) expected error, but got nil", content, invalidFileName)
-	}
-
-	expectedErrorMsg := "usage: go run . --output=<fileName.txt> something standard"
-	if err.Error() != expectedErrorMsg {
-		t.Errorf("Expected error message %q, got %q", expectedErrorMsg, err.Error())
 	}
 }

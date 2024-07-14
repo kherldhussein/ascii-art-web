@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ASCII Art Generator</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+        body {
+            font-family: 'Roboto', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #333;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        form textarea[type="text"] {
+            width: 100%;
+            max-width: 400px;
+            padding: 12px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+            font-family: 'Roboto', Arial, sans-serif;
+        }
+
+        form input[type="submit"] {
+            padding: 12px 24px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            font-family: 'Roboto', Arial, sans-serif;
+        }
+
+        form input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+
+        .output-area {
+            padding: 30px;
+            border: 1px solid #ccc;
+            background-color: white;
+            min-height: 300px;
+            white-space: pre;
+            font-family: 'Courier New', monospace;
+            font-size: 18px;
+            line-height: 1.5;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            overflow-x: auto;
+
+        }
+
+        .radio-group {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 15px;
+        }
+
+        .radio-group label {
+            margin-right: 20px;
+            font-size: 16px;
+        }
+
+        .credits {
+            margin-top: 50px;
+            text-align: center;
+            font-size: 14px;
+            color: #666;
+        }
+
+        .credits span {
+            font-weight: bold;
+            color: #333;
+        }
+
+        /* Credits section styles */
+        .credits {
+            margin-top: 40px;
+            text-align: center;
+            font-size: 14px;
+            color: #666;
+        }
+
+        .credits h3 {
+            margin-bottom: 10px;
+            font-size: 16px;
+            color: #333;
+        }
+
+        .developer {
+            display: inline-block;
+            margin: 0 20px;
+            animation: pulse 2s infinite;
+        }
+
+        .developer i {
+            margin-left: 10px;
+        }
+
+        .developer img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            margin-bottom: 5px;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.1);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>ASCII Art Generator</h1>
+
+        <form id="asciiForm" method="post" action="/ascii-art">
+            <textarea id="inputText" name="Input" type="text" placeholder="Enter Input" required></textarea>
+
+            <div class="radio-group">
+                <label>
+                    <input type="radio" name="Banner" value="standard" checked>
+                    Standard
+                </label>
+                <label>
+                    <input type="radio" name="Banner" value="thinkertoy">
+                    Thinkertoy
+                </label>
+                <label>
+                    <input type="radio" name="Banner" value="shadow">
+                    Shadow
+                </label>
+                <label>
+                    <input type="radio" name="Banner" value="all">
+                    All
+                </label>
+            </div>
+
+            <input type="submit" value="Generate ASCII Art">
+        </form>
+
+        <div class="output-area" id="asciiResult">
+            <!-- Output will be displayed here -->
+        </div>
+        <div class="credits">
+            <h3>Developed by:</h3>
+
+            <div class="developer">
+                <a href="https://github.com/Doreen-Onyango" target="_blank">
+                    <img src="https://learn.zone01kisumu.ke/git/avatars/8b6aba3403814dc8060be0eca2a89251"
+                        alt="doonyango">
+                </a>
+                <p>Doreen Onyango</p>
+                <a href="https://github.com/Doreen-Onyango" target="_blank"><i class="fa fa-github"></i></a>
+                <a href="https://ke.linkedin.com/in/doreen-atieno-466104239" target="_blank"><i
+                        class="fa fa-linkedin"></i></a>
+            </div>
+
+            <div class="developer">
+                <a href="https://github.com/kherldhussein" target="_blank">
+                    <img src="https://learn.zone01kisumu.ke/git/avatars/6acb4b5c6cf5b91a9037f7002ef5b900"
+                        alt="khahussein">
+                </a>
+                <p>Khalid Hussein</p>
+                <a href="https://github.com/kherldhussein" target="_blank"><i class="fa fa-github"></i></a>
+                <a href="https://linkedin.com/in/kherldhussein" target="_blank"><i class="fa fa-linkedin"></i></a>
+            </div>
+
+            <div class="developer">
+                <a href="https://github.com/Tomlee-abila" target="_blank">
+                    <img src="https://learn.zone01kisumu.ke/git/avatars/6064a47f5fd44b571b14c852996f60a8" alt="tabila">
+                </a>
+                <p>Tomlee Abila</p>
+                <a href="https://github.com/Tomlee-abila" target="_blank"><i class="fa fa-github"></i></a>
+                <a href="https://ke.linkedin.com/in/tomlee-abila-4aa33a236" target="_blank"><i
+                        class="fa fa-linkedin"></i></a>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        document.getElementById('asciiForm').addEventListener('submit', function (event) {
+            event.preventDefault();
+
+            const text = document.querySelector('#asciiForm textarea[name="Input"]').value;
+            const banner = document.querySelector('#asciiForm input[name="Banner"]:checked').value;
+
+            const formData = new URLSearchParams();
+            formData.append('Text', text);
+            formData.append('Banner', banner);
+
+            fetch('/ascii-art', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: formData.toString()
+            })
+                .then(response => response.text())
+                .then(data => {
+                    document.querySelector('.output-area').textContent = data;
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        });
+    </script>
+
+</body>
+
+</html>
