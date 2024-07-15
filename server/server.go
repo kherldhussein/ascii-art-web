@@ -17,16 +17,17 @@ var banners = map[string]string{
 }
 
 func AsciiServer(w http.ResponseWriter, r *http.Request) {
+	// chech method
 	if r.Method != http.MethodPost {
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 		return
 	}
-
+	// Parse for data from the client
 	if err := r.ParseForm(); err != nil {
 		send.SendError(w, fmt.Sprintf("ParseForm() %v", err), http.StatusBadRequest)
 		return
 	}
-
+	// retrieve value associated with the
 	text := r.FormValue("Text")
 	banner := r.FormValue("Banner")
 	for param := range r.Form {
@@ -66,7 +67,7 @@ func writeAscii(w http.ResponseWriter, banner, text string) string {
 		return ""
 	}
 
-	if err := check.ValidateFileChecksum(filename); err != nil {
+	if err := check.ValidateFileChecksum(w, filename); err != nil {
 		send.SendError(w, fmt.Sprintf("Error 404: Error downloading or validating file: %v", err), http.StatusNotFound)
 		return ""
 	}
