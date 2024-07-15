@@ -68,7 +68,7 @@ func writeAscii(w http.ResponseWriter, banner, text string) string {
 	}
 
 	if err := check.ValidateFileChecksum(w, filename); err != nil {
-		send.SendError(w, fmt.Sprintf("Error 404: Error downloading or validating file: %v", err), http.StatusNotFound)
+		send.SendError(w, fmt.Sprintf("Error 404: Error processing file: %v", err), http.StatusNotFound)
 		return ""
 	}
 
