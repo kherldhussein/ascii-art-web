@@ -18,7 +18,7 @@ var expectedChecksum = map[string]string{
 
 func ValidateFileChecksum(w http.ResponseWriter, file string) error {
 	if _, err := os.Stat(file); os.IsNotExist(err) {
-		send.SendError(w, fmt.Sprintf("Error 500: Internal server error: Downloading... %v", err), http.StatusInternalServerError)
+		send.SendError(w, fmt.Sprintf("Error 500: Please wait while downloading... %v", err), http.StatusInternalServerError)
 		err := DownloadFile(file)
 		if err != nil {
 			return fmt.Errorf("error downloading file: %w", err)
