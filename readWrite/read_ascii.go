@@ -23,10 +23,12 @@ func ValidateFileName(file string) bool {
 
 func ReadAscii(filename string, w http.ResponseWriter) ([][]string, error) {
 	if !ValidateFileName(filename) {
+		send.SendError(w, "Error 500: Internal server error", http.StatusInternalServerError)
 		return nil, fmt.Errorf("unsupported file name: %s", filename)
 	}
 
 	if !strings.HasSuffix(filename, ".txt") {
+		send.SendError(w, "Error 500: Internal server error", http.StatusInternalServerError)
 		return nil, fmt.Errorf("unsupported file format: %s", filename)
 	}
 
@@ -56,6 +58,7 @@ func ReadAscii(filename string, w http.ResponseWriter) ([][]string, error) {
 	}
 
 	if err := scanner.Err(); err != nil {
+		send.SendError(w, "Error 500: Internal server error", http.StatusInternalServerError)
 		return nil, fmt.Errorf("error scanning file: %w", err)
 	}
 	return asciiArtGrid, nil
