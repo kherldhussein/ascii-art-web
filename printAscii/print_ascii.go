@@ -7,6 +7,8 @@ import (
 	send "webAscii/utils"
 )
 
+// Generates art for a word based on an ASCII art grid.
+// Concatenates each line of ASCII art for the word into a single string.
 func printWord(word string, asciiArtGrid [][]string) string {
 	var result strings.Builder
 	for i := 1; i <= 8; i++ {
@@ -19,6 +21,8 @@ func printWord(word string, asciiArtGrid [][]string) string {
 	return result.String()
 }
 
+// Generates ASCII art for a given string input.
+// handles special cases and validates input characters before generating ASCII art.
 func PrintArt(w http.ResponseWriter, str string, asciiArtGrid [][]string) string {
 	var result strings.Builder
 
