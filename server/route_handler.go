@@ -8,6 +8,8 @@ import (
 	send "webAscii/utils"
 )
 
+// Handl handles HTTP requests at the root path ("/").
+// Serves the index.html template located in the "./templates/" directory.
 func Handl(w http.ResponseWriter, r *http.Request) {
 	if r.URL.Path != "/" {
 		http.NotFound(w, r)
@@ -19,7 +21,7 @@ func Handl(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if err = tmpl.Execute(w, nil); err != nil {
+	if err := tmpl.Execute(w, nil); err != nil {
 		fmt.Printf("error %v", err)
 	}
 }
