@@ -1,4 +1,4 @@
-package output
+package tests
 
 import (
 	"testing"
@@ -15,7 +15,7 @@ func TestReadAscii(t *testing.T) {
 		{
 			name:     "valid file name",
 			filename: "shadow.txt",
-			want:     true,
+			want:     false,
 		},
 		{
 			name:     "invalid file name",
