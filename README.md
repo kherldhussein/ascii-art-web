@@ -37,7 +37,7 @@ go run .
 
 Type something in the text area provided and should display some output
 
-![Hello!](public/img.png)
+![Hello!](public/images/img.png)
 <!-- Screenshot of our web interface: shows example of the UI -->
 
 ## Test
