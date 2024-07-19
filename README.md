@@ -1,15 +1,17 @@
 # ASCII Art Web
 
-This project involves creating a Go program that generates ASCII art based on a given string and banner style, using a web interface and displays the results on the same interface.
+This is a program that generates ASCII art based on a given string and banner style specified. The program uses a web interface to displays the results.
 
 ## Features
 
 - Converts strings into ASCII art
 - Supports numbers, letters, spaces, special characters, and newline characters ('\n')
 - Utilizes specific graphical templates for ASCII representation
-- A running a server and a web GUI (graphical user interface)
+- Interactive web view: GUI (graphical user interface)
 
 ## Installation
+
+This program is written purely in [Go](https://go.dev) language for the backend, before you think of running it, please make sure to have Go installed on your system.
 
 1. Clone the repository:
 
@@ -23,24 +25,72 @@ This project involves creating a Go program that generates ASCII art based on a 
     cd ascii-art-web/
     ```
 
-
 ## Usage
 
-Run the server to start the [localhost](http://localhost:8080), then use the web browser to interact with the system.
+Run the below command to start the server, then use the web browser to interact with the system [localhost](http://localhost:8080)
 
 ```bash
 go run .
 ```
 
-<!-- Example: -->
-<!-- TODO: Add screenshot of our web interface here to show example of the UI -->
+## Example
+
+Type something in the text area provided and should display some output
+
+![Hello!](public/images/img.png)
+<!-- Screenshot of our web interface: shows example of the UI -->
 
 ## Test
-start the server with the above usage command and run the below command to test server functionality
+
+To test the functions, you can go two ways;
+
+1. Navigate to the tests directory and paste the following command.
 
 ```bash
-curl -X POST -d "Input=Hello World" -d "Banner=standard" http://localhost:8080/ascii
+go test -v
 ```
+
+2. Start the server with the above usage command and run the below command to test the program's functionality
+
+```bash
+curl -X POST -d "Text=Hello World&Banner=standard" http://localhost:8080/ascii-art
+```
+Expected Output:
+```
+ _    _          _   _                __          __                 _       _  
+| |  | |        | | | |               \ \        / /                | |     | | 
+| |__| |   ___  | | | |   ___          \ \  /\  / /    ___    _ __  | |   __| | 
+|  __  |  / _ \ | | | |  / _ \          \ \/  \/ /    / _ \  | '__| | |  / _` | 
+| |  | | |  __/ | | | | | (_) |          \  /\  /    | (_) | | |    | | | (_| | 
+|_|  |_|  \___| |_| |_|  \___/            \/  \/      \___/  |_|    |_|  \__,_| 
+                                                                                
+                        
+```
+
+## Implementation
+
+Below is the function that handles requests and responses. This extract specifically displays the data based on the banner file selected and if the 'all' button is selected it displays data based on all the banner files.
+
+```go
+func AsciiServer(w http.ResponseWriter, r *http.Request) {
+    // ...
+	all := []string{"standard", "thinkertoy", "shadow"}
+
+	if banner == "all" {
+		for i, bn := range all {
+			if i != 0 {
+				str += "\n"
+			}
+			str += writeAscii(w, bn, text)
+		}
+	} else {
+		str += writeAscii(w, banner, text)
+	}
+
+    // ...
+    fmt.Fprint(w, str)
+}
+```    
 
 ## File Formats
 
@@ -60,6 +110,10 @@ If you have suggestions for improvements, bug fixes, or new features, feel free 
 
 This project was build and maintained by:
 
- * [Doreen Onyango](https://github.com/Doreen-Onyango)
- * [Kherld Hussein](https://github.com/kherldhussein)
- * [Tomlee Abila](https://github.com/Tomlee-abila)
+ * [Doreen Onyango][doonyango]
+ * [Khalid Hussein][khahussein]
+ * [Tomlee Abila][tabila]
+
+[khahussein]: https://github.com/kherldhussein
+[doonyango]: https://github.com/Doreen-Onyango
+[tabila]: https://github.com/Tomlee-abila

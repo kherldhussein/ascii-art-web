@@ -2,67 +2,92 @@ package webAscii
 
 import (
 	"fmt"
-	"log"
 	"net/http"
 
 	check "webAscii/checksum"
 	print "webAscii/printAscii"
 	output "webAscii/readWrite"
+	send "webAscii/utils"
 )
 
 var banners = map[string]string{
-	"standard":   "standard.txt",
-	"thinkertoy": "thinkertoy.txt",
-	"shadow":     "shadow.txt",
+	"standard":   "public/standard.txt",
+	"thinkertoy": "public/thinkertoy.txt",
+	"shadow":     "public/shadow.txt",
 }
 
-// Enable CORS middleware
-func enableCors(w *http.ResponseWriter) {
-	(*w).Header().Set("Access-Control-Allow-Origin", "*")
-	(*w).Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
-	(*w).Header().Set("Access-Control-Allow-Headers", "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization")
-}
-
+// HTTP handler function that processes ASCII art generation requests.
 func AsciiServer(w http.ResponseWriter, r *http.Request) {
-	// Handle CORS preflight request
-	if r.Method == "OPTIONS" {
-		enableCors(&w)
-		return
-	}
-
+	// Check if the request method is POST. If not, return a 405 Method Not Allowed error.
 	if r.Method != http.MethodPost {
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 		return
 	}
 
+	// Parse the form data from the request.
 	if err := r.ParseForm(); err != nil {
-		http.Error(w, fmt.Sprintf("ParseForm() %v", err), http.StatusBadRequest)
+		send.SendError(w, fmt.Sprintf("ParseForm() %v", err), http.StatusBadRequest)
+		return
 	}
 
-	input := r.FormValue("Input")
+	// Retrieve the values of the "Text" and "Banner" form fields.
+	text := r.FormValue("Text")
 	banner := r.FormValue("Banner")
 
+	// Check if there are any additional form parameters and return error 400.
+	for param := range r.Form {
+		if param != "Text" && param != "Banner" {
+			send.SendError(w, "Error 400: Bad request", http.StatusBadRequest)
+			break
+		}
+	}
+
+	// If either field is empty, return error 400.
+	if banner == "" || text == "" {
+		send.SendError(w, "Error 400 Bad request: nothing is specified", http.StatusBadRequest)
+		return
+	}
+
+	var output string
+
+	// Generate ASCII art for all available banners.
+	if banner == "all" {
+		for i, bn := range []string{"standard", "thinkertoy", "shadow"} {
+			if i != 0 {
+				output += "\n"
+			}
+			output += writeAscii(w, bn, text)
+		}
+	} else {
+		output = writeAscii(w, banner, text)
+	}
+
+	// Set the response content type and writes the output to the response.
+	w.Header().Set("Content-Type", "text/plain")
+	fmt.Fprint(w, output)
+}
+
+// Generates ASCII art for the given banner and text.
+func writeAscii(w http.ResponseWriter, banner, text string) string {
 	filename, ok := banners[banner]
 	if !ok {
-		http.Error(w, "Invalid banner specified", http.StatusBadRequest)
-		return
+		send.SendError(w, "Error 404: Not Found: Invalid banner specified\n", http.StatusNotFound)
+		return ""
 	}
 
-	err := check.ValidateFileChecksum(filename)
+	// Validate the checksum of the banner file.
+	if err := check.ValidateFileChecksum(w, filename); err != nil {
+		send.SendError(w, fmt.Sprintf("Error 404: Error processing file: %v", err), http.StatusNotFound)
+		return ""
+	}
+
+	// Read the ASCII art grid from the banner file.
+	asciiArtGrid, err := output.ReadAscii(filename, w)
 	if err != nil {
-		log.Printf("Error downloading or validating file: %v", err)
-		http.Error(w, "Error generating ASCII art", http.StatusInternalServerError)
-		return
+		send.SendError(w, fmt.Sprintf("Error 500: Internal Server Error: Error reading ASCII art:%v", err), http.StatusInternalServerError)
+		return ""
 	}
 
-	asciiArtGrid, err := output.ReadAscii(filename)
-	if err != nil {
-		log.Fatalf("Error reading ASCII map: %v", err)
-		http.Error(w, "Error generating ASCII art", http.StatusInternalServerError)
-	}
-
-	str := print.PrintArt(input, asciiArtGrid)
-
-	w.Header().Set("Content-Type", "text/plain")
-	fmt.Fprint(w, str)
+	// Print the ASCII art using the provided text.
+	return print.PrintArt(w, text, asciiArtGrid)
 }

@@ -5,18 +5,24 @@ import (
 	"encoding/hex"
 	"fmt"
 	"io"
+	"net/http"
 	"os"
+
+	send "webAscii/utils"
 )
 
 var expectedChecksum = map[string]string{
-	"standard.txt":   "e194f1033442617ab8a78e1ca63a2061f5cc07a3f05ac226ed32eb9dfd22a6bf",
-	"shadow.txt":     "26b94d0b134b77e9fd23e0360bfd81740f80fb7f6541d1d8c5d85e73ee550f73",
-	"thinkertoy.txt": "64285e4960d199f4819323c4dc6319ba34f1f0dd9da14d07111345f5d76c3fa3",
+	"public/standard.txt":   "e194f1033442617ab8a78e1ca63a2061f5cc07a3f05ac226ed32eb9dfd22a6bf",
+	"public/shadow.txt":     "26b94d0b134b77e9fd23e0360bfd81740f80fb7f6541d1d8c5d85e73ee550f73",
+	"public/thinkertoy.txt": "64285e4960d199f4819323c4dc6319ba34f1f0dd9da14d07111345f5d76c3fa3",
 }
 
-func ValidateFileChecksum(file string) error {
+// Verifies file checksum against expected values.
+func ValidateFileChecksum(w http.ResponseWriter, file string) error {
+	// Check if the file exists
 	if _, err := os.Stat(file); os.IsNotExist(err) {
-		fmt.Printf("File %s does not exist. Downloading...\n", file)
+		// Handle case where file doesn't exist
+		send.SendError(w, fmt.Sprintf("Error 500: Please wait while downloading... %v", err), http.StatusInternalServerError)
 		err := DownloadFile(file)
 		if err != nil {
 			return fmt.Errorf("error downloading file: %w", err)
@@ -27,16 +33,20 @@ func ValidateFileChecksum(file string) error {
 		// File exists, calculate its checksum
 		checksum, err := calculateChecksum(file)
 		if err != nil {
-			return fmt.Errorf("error calculating checksum: %w", err)
+			send.SendError(w, fmt.Sprintf("Error 500: Internal server error: %v", err), http.StatusInternalServerError)
+			return fmt.Errorf("error calculating checksum for file: %w", err)
 		}
 
+		// Compare calculated checksum with expected checksum
 		expected, ok := expectedChecksum[file]
 		if !ok {
+			send.SendError(w, fmt.Sprintf("Error 500: Internal server error: no expected checksum defined for file: %s", file), http.StatusInternalServerError)
 			return fmt.Errorf("no expected checksum defined for file: %s", file)
 		}
 
 		if checksum != expected {
-			fmt.Printf("Checksum verification failed for file: %s. Downloading...\n", file)
+			// Handle case where checksum doesn't match expected value
+			send.SendError(w, fmt.Sprintf("Error 500: Internal server error: checksum mismatch for file: %s", file), http.StatusInternalServerError)
 			err := DownloadFile(file)
 			if err != nil {
 				return fmt.Errorf("error downloading file: %w", err)
@@ -48,6 +58,7 @@ func ValidateFileChecksum(file string) error {
 	return nil
 }
 
+// Calculates the SHA-256 checksum of a given file.
 func calculateChecksum(filename string) (string, error) {
 	file, err := os.Open(filename)
 	if err != nil {
